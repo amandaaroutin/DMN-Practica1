@@ -43,6 +43,44 @@ Este proyecto consiste en una aplicación web para la gestión de citas médicas
 - **Backend (Flask)**: http://localhost:5001
 - **API de citas**: http://localhost:5001/api/citas (requiere autenticación)
 
+## Estructura que sigue nuestro proyecto
+```
+Practica 1/
+├── docker-compose.yml
+├── README.md
+├── backend/
+│   ├── app.py
+│   ├── Dockerfile
+│   └── requirements.txt
+├── bd/
+│   └── init.sql
+└── frontend/
+    ├── Dockerfile
+    ├── nginx.conf
+    ├── static/
+    └── templates/
+```
+## Comandos que usamos
+
+### Detener la aplicación:
+```bash
+docker-compose down
+```
+
+### Ver logs de los contenedores:
+```bash
+docker-compose logs
+docker-compose logs backend
+docker-compose logs frontend
+docker-compose logs bd
+```
+
+### Reconstruir sin caché:
+```bash
+docker-compose build --no-cache
+docker-compose up --build
+```
+
 ## Pruebas básicas para verificar la integración de los tres contenedores
 
 ### 1. Prueba del Frontend (Contenedor Nginx)
@@ -86,45 +124,6 @@ Este proyecto consiste en una aplicación web para la gestión de citas médicas
 - **Frontend → Backend**: Los formularios del frontend comunican con el backend
 - **Backend → Base de datos**: Los datos se almacenan y recuperan correctamente
 - **Flujo completo**: Registro → Login → Crear cita → Ver citas en JSON
-
-## Comandos que usamos
-
-### Detener la aplicación:
-```bash
-docker-compose down
-```
-
-### Ver logs de los contenedores:
-```bash
-docker-compose logs
-docker-compose logs backend
-docker-compose logs frontend
-docker-compose logs bd
-```
-
-### Reconstruir sin caché:
-```bash
-docker-compose build --no-cache
-docker-compose up --build
-```
-
-## Estructura que sigue nuestro proyecto
-```
-Practica 1/
-├── docker-compose.yml
-├── README.md
-├── backend/
-│   ├── app.py
-│   ├── Dockerfile
-│   └── requirements.txt
-├── bd/
-│   └── init.sql
-└── frontend/
-    ├── Dockerfile
-    ├── nginx.conf
-    ├── static/
-    └── templates/
-```
 
 ## Creación de los contenedores
 
