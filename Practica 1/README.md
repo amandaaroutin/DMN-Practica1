@@ -229,7 +229,7 @@ Los contenedores se comunican a través de la red interna de Docker Compose:
 - **Backend** → **Base de datos**: Conexión PostgreSQL mediante psycopg2
 - **Red Docker**: Todos los contenedores en la misma red `practica1_default`
 
-### Enlace al repositorio de GitHub
+## Enlace al repositorio de GitHub
 
 https://github.com/amandaaroutin/DMN-Practica1
 
