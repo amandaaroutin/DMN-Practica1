@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <title>Dashboard</title>
+</head>
+
+<body>
+
+    <header class="main-header">
+
+        <div class="header-content">
+
+            <h1>TechSolutions S.A. - Gestión de Citas Médicas</h1>
+
+            <p>Prototipo funcional para clínicas privadas</p>
+
+        </div>
+
+    </header>
+
+    <div class="container">
+
+        <h1>¡Bienvenid@, {{ user_name }}!</h1>
+
+        <!-- Botón para mostrar/ocultar formulario -->
+        <input type="checkbox" id="toggle-cita" style="display:none;">
+        <label for="toggle-cita" class="add-cita-btn" style="cursor:pointer; text-align:center;">
+            Crear nueva cita
+        </label>
+
+        <!-- Formulario de nueva cita oculto por defecto -->
+        <div class="form-nueva-cita">
+
+            <form method="POST" action="{{ url_for('dashboard') }}">
+
+                <div>
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+
+                <div>
+                    <label for="hora">Hora:</label>
+                    <input type="time" id="hora" name="hora" required>
+                </div>
+
+                <div>
+                    <label for="motivo">Motivo:</label>
+                    <input type="text" id="motivo" name="motivo" maxlength="255" required>
+                </div>
+
+                <button type="submit">Registrar cita</button>
+
+            </form>
+
+        </div>
+
+        <!-- Mostrar mensaje si existe -->
+        {% if message is defined and message %}
+            <div>
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <h2>Tabla de citas</h2>
+
+        {% if citas is not none and citas|length > 0 %}
+
+        <table style="width:100%;margin-bottom:20px;">
+
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Motivo</th>
+                <th>ID</th>
+                <th>Ver detalles</th>
+                <th>Cancelar</th>
+            </tr>
+
+            {% for cita in citas %}
+
+            <tr>
+                <td>{{ cita[0].strftime("%d - %m - %Y") }}</td>
+                <td>{{ cita[1].strftime("%I:%M %p") }}</td>  <!-- Formato 12h -->
+                <td>{{ cita[2] }}</td>
+                <td>{{ cita[3] }}</td>
+                <td>
+                    <a href="#detalle-{{cita[3]}}" class="btn-detalle">Ver detalles</a>
+                </td>
+                <td>
+                    <form action="{{ url_for('eliminar_cita', cita_id=cita[3]) }}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta cita? Esta acción no se puede deshacer.');">
+                        <button type="submit" class="btn-cancelar">Cancelar</button>
+                    </form> 
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        <!-- Modales de detalle -->
+        {% for cita in citas %}
+
+        <div id="detalle-{{cita[3]}}" class="modal">
+
+            <div class="modal-content">
+
+                <a href="#" class="close">&times;</a>
+                <h3>Detalles de la cita</h3>
+                <p><strong>Fecha:</strong> {{ cita[0].strftime("%d - %m - %Y") }}</p>
+                <p><strong>Hora:</strong> {{ cita[1].strftime("%I:%M %p") }}</p>  <!-- Formato 12h -->
+                <p><strong>Motivo:</strong> {{ cita[2] }}</p>
+                <p><strong>ID del paciente:</strong> {{ cita[3] }}</p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+            <p>No tienes citas registradas.</p>
+        {% endif %}
+
+        <!-- Botón de cerrar sesión -->
+        <a href="/logout" class="logout-btn" onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');">Cerrar Sesión</a>
+    
+    </div>
+
+
+</body>
+
+<script>
+    const today = new Date().toISOString().split('T')[0]; // "2025-10-05"
+    document.getElementById('fecha').setAttribute('min', today);
+</script>
+
+</html>
